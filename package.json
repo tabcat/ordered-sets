@@ -7,7 +7,28 @@
   "files": [
     "dist/src"
   ],
-  "exports": "./dist/src/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js"
+    },
+    "difference": {
+      "types": "./dist/src/difference.d.ts",
+      "import": "./dist/src/difference.js"
+    },
+    "intersection": {
+      "types": "./dist/src/intersection.d.ts",
+      "import": "./dist/src/intersection.js"
+    },
+    "union": {
+      "types": "./dist/src/union.d.ts",
+      "import": "./dist/src/union.js"
+    },
+    "util": {
+      "types": "./dist/src/util.d.ts",
+      "import": "./dist/src/util.js"
+    }
+  },
   "types": "./dist/src/index.d.ts",
   "scripts": {
     "build": "tsc",
