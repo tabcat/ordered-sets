@@ -8,23 +8,23 @@
     "dist/src"
   ],
   "exports": {
-    ".": {
+    "./": {
       "types": "./dist/src/index.d.ts",
       "import": "./dist/src/index.js"
     },
-    "difference": {
+    "./difference": {
       "types": "./dist/src/difference.d.ts",
       "import": "./dist/src/difference.js"
     },
-    "intersection": {
+    "./intersection": {
       "types": "./dist/src/intersection.d.ts",
       "import": "./dist/src/intersection.js"
     },
-    "union": {
+    "./union": {
       "types": "./dist/src/union.d.ts",
       "import": "./dist/src/union.js"
     },
-    "util": {
+    "./util": {
       "types": "./dist/src/util.d.ts",
       "import": "./dist/src/util.js"
     }
