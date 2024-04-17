@@ -31,7 +31,7 @@
   },
   "types": "./dist/src/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "rm -rf ./dist && tsc",
     "test": "vitest",
     "lint": "eslint"
   },
