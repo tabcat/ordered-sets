@@ -1,4 +1,4 @@
-import { safeArrayAccess, dualTraversal, readArray } from "./util.js";
+import { safeArrayAccess, dualTraversal, readArray } from "./util";
 
 /**
  * Set difference of two ordered sets in a new array.
