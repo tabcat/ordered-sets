@@ -34,19 +34,13 @@ export function* dualTraversal<T>(
   if (first.length > 0) i = 0;
   if (second.length > 0) j = 0;
 
-  // safe i, safe j
-  const getSafeI = () => Math.min(first.length - 1, i);
-  const getSafeJ = () => Math.min(second.length - 1, j);
-
   while (i >= 0 && i < first.length && j >= 0 && j < second.length) {
-    const safeI = getSafeI();
-    const safeJ = getSafeJ();
     const order = comparator(
-      safeArrayAccess(first, safeI),
-      safeArrayAccess(second, safeJ),
+      safeArrayAccess(first, i),
+      safeArrayAccess(second, j),
     );
 
-    yield [safeI, safeJ, order];
+    yield [i, j, order];
 
     if (order < 0) {
       // first element < second element
@@ -75,19 +69,16 @@ export function* dualTraversal<T>(
   }
 
   while (i >= 0 && i < first.length) {
-    const safeI = getSafeI();
-    const safeJ = getSafeJ();
-
     // only second set is empty
     if (j === -1) {
-      yield [safeI, j, -1]; // -1 because first[safeI] (comparator a param) is < undefined
+      yield [i, j, -1]; // -1 because first[i] (comparator a param) is < undefined
     } else {
       yield [
-        safeI,
-        safeJ,
+        i,
+        j - 1,
         comparator(
-          safeArrayAccess(first, safeI),
-          safeArrayAccess(second, safeJ),
+          safeArrayAccess(first, i),
+          safeArrayAccess(second, j - 1),
         ),
       ];
     }
@@ -96,19 +87,16 @@ export function* dualTraversal<T>(
   }
 
   while (j >= 0 && j < second.length) {
-    const safeI = getSafeI();
-    const safeJ = getSafeJ();
-
     // only first set is empty
     if (i === -1) {
-      yield [i, safeJ, 1]; // 1 because second[safeJ] (comparator b param) is < undefined
+      yield [i, j, 1]; // 1 because second[j] (comparator b param) is < undefined
     } else {
       yield [
-        safeI,
-        safeJ,
+        i - 1,
+        j,
         comparator(
-          safeArrayAccess(first, safeI),
-          safeArrayAccess(second, safeJ),
+          safeArrayAccess(first, i - 1),
+          safeArrayAccess(second, j),
         ),
       ];
     }
