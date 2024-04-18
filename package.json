@@ -7,6 +7,9 @@
   "files": [
     "dist/src"
   ],
+  "engines": {
+    "node": ">=20"
+  },
   "exports": {
     "./": {
       "types": "./dist/src/index.d.ts",
