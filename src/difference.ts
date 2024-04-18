@@ -1,7 +1,7 @@
 import { safeArrayAccess, dualTraversal, readArray } from "./util.js";
 
 /**
- * Set difference of two ordered sets in a new array.
+ * Yields the difference of two ordered sets.
  *
  * @param minuend - Set from which to remove elements
  * @param subtrahend - Set of elements to be removed
@@ -39,7 +39,7 @@ export function* difference<T>(
 }
 
 /**
- * Set symmetric difference of two ordered sets in a new array.
+ * Yields the symmetric difference of two ordered sets.
  *
  * @param minuend - Source ordered set
  * @param subtrahend - Target ordered set
@@ -58,7 +58,7 @@ export function* symmetric<T>(
 export type Diff<T> = [T, null] | [null, T];
 
 /**
- * Diff of two ordered sets.
+ * Yields the pairwise symmetric difference of two ordered sets.
  *
  * @param source - Source ordered set
  * @param target - Target ordered set

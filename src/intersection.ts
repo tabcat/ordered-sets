@@ -1,7 +1,7 @@
 import { safeArrayAccess, dualTraversal } from "./util.js";
 
 /**
- * Set intersection of two ordered sets in a new array.
+ * Yields the intersection of two ordered sets.
  *
  * @param source - Set from which to remove elements
  * @param target - Set of elements to be removed

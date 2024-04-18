@@ -1,9 +1,10 @@
 /**
- * Access an index of an array. If the accessed index is undefined, throw.
+ * Safely access an index of an array.
+ * If the accessed index is undefined, throws an error.
  * Satisfies noUncheckedIndexedAccess of tsconfig.
  *
- * @param array
- * @param index
+ * @param array - Array to access
+ * @param index - Index of Array to access
  * @returns
  */
 export function safeArrayAccess<T>(array: T[], index: number): T {
@@ -16,8 +17,8 @@ export function safeArrayAccess<T>(array: T[], index: number): T {
   return access;
 }
 
-/*
- * Yields array indexes and element comparison by traversing two arrays in order.
+/**
+ * Yields array indexes and element comparison from traversing two arrays in order.
  *
  * @param first - First array to traverse
  * @param second - Second array to traverse
@@ -101,12 +102,12 @@ export function* dualTraversal<T>(
 }
 
 /**
- * Similar to .splice except it does not create a new array.
- * Also negative numbers as parameters is not supported yet.
+ * Yields elements of an array from start index to end index.
+ * Similar to array.splice, however negative numbers as parameters are not supported yet.
  *
- * @param array
- * @param start
- * @param end
+ * @param array - Array to read from
+ * @param start - Index to start at (inclusive)
+ * @param end - Index to end at (exclusive)
  */
 export function* readArray<T>(
   array: T[],
