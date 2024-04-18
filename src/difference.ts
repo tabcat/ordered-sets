@@ -1,4 +1,4 @@
-import { safeArrayAccess, dualTraversal, readArray } from "./util";
+import { safeArrayAccess, dualTraversal, readArray } from "./util.js";
 
 /**
  * Set difference of two ordered sets in a new array.
@@ -10,7 +10,7 @@ import { safeArrayAccess, dualTraversal, readArray } from "./util";
 export function* difference<T>(
   minuend: T[],
   subtrahend: T[],
-  comparator: (a: T, b: T) => number
+  comparator: (a: T, b: T) => number,
 ): Generator<T> {
   let pastSubtrahend: boolean = false;
 
@@ -48,7 +48,7 @@ export function* difference<T>(
 export function* symmetric<T>(
   minuend: T[],
   subtrahend: T[],
-  comparator: (a: T, b: T) => number
+  comparator: (a: T, b: T) => number,
 ): Generator<T> {
   for (const [s, t] of diff(minuend, subtrahend, comparator)) {
     yield (s ?? t)!;
@@ -67,7 +67,7 @@ type Diff<T> = [T, null] | [null, T];
 export function* diff<T>(
   source: T[],
   target: T[],
-  comparator: (a: T, b: T) => number
+  comparator: (a: T, b: T) => number,
 ): Generator<Diff<T>> {
   let pastSource = false;
   let pastTarget = false;

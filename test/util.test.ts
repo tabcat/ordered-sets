@@ -152,12 +152,12 @@ describe("readArray", () => {
 
       test("no end", () => {
         expect([...readArray([], 0)]).toEqual([].slice(0));
-        expect(() => [...readArray([], 1)]).toThrow()
+        expect(() => [...readArray([], 1)]).toThrow();
       });
 
       test("start and end", () => {
         expect([...readArray(numbers, 0, 0)]).toEqual([].slice(0, 0));
-        expect(() => [...readArray([], 4, 4)]).toThrow()
+        expect(() => [...readArray([], 4, 4)]).toThrow();
       });
     });
 
