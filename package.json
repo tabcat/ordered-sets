@@ -34,7 +34,8 @@
     "build": "rm -rf ./dist && tsc",
     "test": "vitest",
     "lint": "eslint",
-    "format": "prettier --write src test && eslint --fix"
+    "format": "prettier --write src test && eslint --fix",
+    "api-docs": "typedoc src"
   },
   "keywords": [
     "set",
@@ -54,6 +55,7 @@
     "eslint-plugin-promise": "^6.1.1",
     "globals": "^15.0.0",
     "prettier": "^3.2.5",
+    "typedoc": "^0.25.13",
     "typescript": "^5.4.5",
     "typescript-eslint": "^7.6.0",
     "vitest": "^1.5.0"

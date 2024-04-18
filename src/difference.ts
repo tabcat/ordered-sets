@@ -55,7 +55,7 @@ export function* symmetric<T>(
   }
 }
 
-type Diff<T> = [T, null] | [null, T];
+export type Diff<T> = [T, null] | [null, T];
 
 /**
  * Diff of two ordered sets.
