@@ -1,8 +1,8 @@
 import { describe, test, expect } from "vitest";
-import { numbers, even, odd, comparator } from "./helpers/sets";
-import { isGenerator } from "./helpers/isGenerator";
-import { testNames } from "./helpers/test-names";
-import { safeArrayAccess, dualTraversal, readArray } from "../src/util";
+import { numbers, even, odd, comparator } from "./helpers/sets.js";
+import { isGenerator } from "./helpers/isGenerator.js";
+import { testNames } from "./helpers/test-names.js";
+import { safeArrayAccess, dualTraversal, readArray } from "../src/util.js";
 
 describe("safeArrayAccess", () => {
   test("returns array[index]", () => {

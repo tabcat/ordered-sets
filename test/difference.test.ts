@@ -1,8 +1,8 @@
 import { describe, test, expect } from "vitest";
-import { difference, symmetric, diff } from "../src/difference";
-import { comparator, even, numbers, odd } from "./helpers/sets";
-import { isGenerator } from "./helpers/isGenerator";
-import { testNames } from "./helpers/test-names";
+import { difference, symmetric, diff } from "../src/difference.js";
+import { comparator, even, numbers, odd } from "./helpers/sets.js";
+import { isGenerator } from "./helpers/isGenerator.js";
+import { testNames } from "./helpers/test-names.js";
 
 describe("difference", () => {
   test(testNames.returnsGenerator, () => {

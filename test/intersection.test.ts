@@ -1,7 +1,7 @@
 import { describe, test, expect } from "vitest";
-import { intersection } from "../src/intersection";
-import { comparator, even, numbers, odd } from "./helpers/sets";
-import { isGenerator } from "./helpers/isGenerator";
+import { intersection } from "../src/intersection.js";
+import { comparator, even, numbers, odd } from "./helpers/sets.js";
+import { isGenerator } from "./helpers/isGenerator.js";
 
 describe("intersection", () => {
   test("finds intersection of two ordered sets", () => {

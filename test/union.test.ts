@@ -1,8 +1,8 @@
 import { describe, test, expect } from "vitest";
-import { union } from "../src/union";
-import { comparator, even, numbers, odd } from "./helpers/sets";
-import { isGenerator } from "./helpers/isGenerator";
-import { testNames } from "./helpers/test-names";
+import { union } from "../src/union.js";
+import { comparator, even, numbers, odd } from "./helpers/sets.js";
+import { isGenerator } from "./helpers/isGenerator.js";
+import { testNames } from "./helpers/test-names.js";
 
 describe("union", () => {
   test(testNames.returnsGenerator, () => {

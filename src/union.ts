@@ -1,4 +1,4 @@
-import { safeArrayAccess, dualTraversal, readArray } from "./util";
+import { safeArrayAccess, dualTraversal, readArray } from "./util.js";
 
 export function* union<T>(
   source: T[],

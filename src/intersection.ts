@@ -1,4 +1,4 @@
-import { safeArrayAccess, dualTraversal } from "./util";
+import { safeArrayAccess, dualTraversal } from "./util.js";
 
 /**
  * Set intersection of two ordered sets in a new array.
