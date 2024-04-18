@@ -29,8 +29,9 @@ export function* dualTraversal<T>(
   comparator: (a: T, b: T) => number,
 ): Generator<[number, number, number]> {
   // can handle empty sets as parameters
-  let i = -1,
-    j = -1;
+  let i = -1;
+  let j = -1;
+
   if (first.length > 0) i = 0;
   if (second.length > 0) j = 0;
 
@@ -76,10 +77,7 @@ export function* dualTraversal<T>(
       yield [
         i,
         j - 1,
-        comparator(
-          safeArrayAccess(first, i),
-          safeArrayAccess(second, j - 1),
-        ),
+        comparator(safeArrayAccess(first, i), safeArrayAccess(second, j - 1)),
       ];
     }
 
@@ -94,10 +92,7 @@ export function* dualTraversal<T>(
       yield [
         i - 1,
         j,
-        comparator(
-          safeArrayAccess(first, i - 1),
-          safeArrayAccess(second, j),
-        ),
+        comparator(safeArrayAccess(first, i - 1), safeArrayAccess(second, j)),
       ];
     }
 
