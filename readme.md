@@ -6,6 +6,8 @@ Utilities for working with ordered sets.
 - Uses Javascript Arrays
 - Efficient Diffs
 
+Core of library is the `dualTraversal` generator in [src/util.ts](https://github.com/tabcat/ordered-sets/blob/master/src/util.ts).
+
 ## Install
 
 Available from NPM at name: `@tabcat/ordered-sets`
