@@ -8,13 +8,22 @@ Utilities for working with ordered sets.
 
 Core of library is the `dualTraversal` generator in [src/util.ts](https://github.com/tabcat/ordered-sets/blob/master/src/util.ts).
 
+## API Docs
+
+https://tabcat.github.io/ordered-sets/
+
 ## Install
 
 Available from NPM at name: `@tabcat/ordered-sets`
 
-## API Docs
+## Build
 
-https://tabcat.github.io/ordered-sets/
+In this package we use [PNPM](https://pnpm.io/)
+
+```
+pnpm install
+pnpm build
+```
 
 ## Performance
 
