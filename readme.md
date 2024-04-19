@@ -20,7 +20,7 @@ This library provides efficient operations for ordered sets.
 
 May be useful in the following cases:
 
-- Set elements must remain keep their order.
+- Set elements must remain in order.
 - Set elements are expensive to store as primitives.
 - Set sizes are large (>500,000 elements)
 
