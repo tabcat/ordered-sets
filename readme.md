@@ -10,9 +10,9 @@ Utilities for working with ordered sets.
 
 Available from NPM at name: `@tabcat/ordered-sets`
 
-## API
+## API Docs
 
-Link to published API
+https://tabcat.github.io/ordered-sets/
 
 ## Performance
 
