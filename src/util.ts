@@ -32,7 +32,6 @@ export function* dualTraversal<T>(
   // can handle empty sets as parameters
   let i = -1;
   let j = -1;
-
   if (first.length > 0) i = 0;
   if (second.length > 0) j = 0;
 
@@ -64,7 +63,7 @@ export function* dualTraversal<T>(
       }
     } else {
       // first element = second element
-      // first is in second set, don't add to difference
+      // increment both
       i++;
       j++;
     }

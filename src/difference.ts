@@ -98,9 +98,8 @@ export function* diff<T>(
     // see if source is exausted
     if (order <= 0 && i === source.length - 1) {
       pastSource = true;
-      // if order is not equal then also yield minuend[i]
-      if (order < 0 && j > 0) {
-        // j could be -1
+      // if order is not equal then also yield target[j]
+      if (order < 0 && j > 0) { // j could be -1
         yield [null, safeArrayAccess(target, j)];
       }
     }
@@ -108,9 +107,8 @@ export function* diff<T>(
     // see if target is exausted
     if (order >= 0 && j === target.length - 1) {
       pastTarget = true;
-      // if order is not equal then also yield minuend[i]
-      if (order > 0 && i > 0) {
-        // i could be -1
+      // if order is not equal then also yield source[i]
+      if (order > 0 && i > 0) { // i could be -1
         yield [safeArrayAccess(source, i), null];
       }
     }
