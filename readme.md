@@ -20,10 +20,11 @@ This library provides efficient operations for ordered sets.
 
 May be useful in the following cases:
 
+- Set elements must remain keep their order.
 - Set elements are expensive to store as primitives.
 - Set sizes are large (>500,000 elements)
 
-If neither of these apply, it's probably better to implement the needed operations using Javascript's Set class.
+If none of these apply, it's probably better to implement the needed operations using Javascript's Set class.
 
 ## Extension
 
