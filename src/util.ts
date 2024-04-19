@@ -102,7 +102,7 @@ export function* dualTraversal<T>(
 
 /**
  * Yields elements of an array from start index to end index.
- * Similar to array.splice, however negative numbers as parameters are not supported yet.
+ * Similar to array.slice, however negative numbers as parameters are not supported yet.
  *
  * @param array - Array to read from
  * @param start - Index to start at (inclusive)
