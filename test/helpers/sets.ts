@@ -1,4 +1,6 @@
-export const numbers: number[] = new Array(8).fill(1).map((_v, i) => i);
+export const createNumbers = (n: number): number[] => new Array(n).fill(1).map((_v, i) => i)
+
+export const numbers: number[] = createNumbers(8)
 
 export const even: number[] = numbers.filter((x) => x % 2 === 0);
 

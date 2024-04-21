@@ -108,7 +108,8 @@
   },
   "include": [
     "src",
-    "test"
+    "test",
+    "benchmark"
   ],
   "exclude": [
     "dist",

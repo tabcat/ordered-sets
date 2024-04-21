@@ -38,7 +38,8 @@
     "test": "vitest",
     "lint": "eslint",
     "format": "prettier --write src test && eslint --fix",
-    "api-docs": "typedoc src"
+    "api-docs": "typedoc src",
+    "benchmark": "pnpm build && node ./dist/benchmark/benchmark.js"
   },
   "keywords": [
     "set",
