@@ -2,7 +2,7 @@ import { describe, test, expect } from "vitest";
 import { numbers, even, odd, comparator } from "./helpers/sets.js";
 import { isGenerator } from "./helpers/isGenerator.js";
 import { testNames } from "./helpers/test-names.js";
-import { safeArrayAccess, dualTraversal, readArray } from "../src/util.js";
+import { safeArrayAccess, dualTraversal, readArray, pairwiseTraversal, PairwiseElement } from "../src/util.js";
 
 describe("safeArrayAccess", () => {
   test("returns array[index]", () => {
@@ -185,6 +185,99 @@ describe("readArray", () => {
       test("end is out of bounds", () => {
         expect(() => [...readArray([], 1)]).toThrow();
       });
+    });
+  });
+});
+
+describe("pairwiseTraversal", () => {
+  test(testNames.returnsGenerator, () => {
+    expect(isGenerator(pairwiseTraversal([], [], comparator))).toBe(true);
+  });
+
+  describe("finds ordered traversal of two sets", () => {
+    let g: Generator<PairwiseElement<number>>;
+    let u: PairwiseElement<number>[];
+
+    test(testNames.firstAndSecondEmpty, () => {
+      g = pairwiseTraversal([], [], comparator);
+      u = [];
+      for (const {} of g) {
+        expect.fail();
+      }
+      expect(u).toEqual([]);
+    });
+
+    test(testNames.firstEmpty, () => {
+      g = pairwiseTraversal([], numbers, comparator);
+      u = [];
+      for (const element of g) {
+        expect(element[0]).toBe(null);
+        expect(element[1]).toBeGreaterThanOrEqual(0);
+        u.push(element);
+      }
+      expect(u).toEqual(numbers.map(n => [null, n]));
+    });
+
+    test(testNames.secondEmpty, () => {
+      g = pairwiseTraversal(numbers, [], comparator);
+      u = [];
+      for (const element of g) {
+        expect(element[1]).toBe(null)
+        u.push(element);
+      }
+      expect(u).toEqual(numbers.map(n => [n, null]));
+    });
+
+    test(testNames.identicalSingle, () => {
+      g = pairwiseTraversal(numbers.slice(0, 1), numbers.slice(0, 1), comparator);
+      u = [];
+      for (const element of g) {
+        expect(element[0]).toEqual(element[1]);
+        u.push(element);
+      }
+      expect(u).toEqual(numbers.slice(0, 1).map(n => [n, n]));
+    });
+
+    test(testNames.identical, () => {
+      g = pairwiseTraversal(numbers, numbers, comparator);
+      u = [];
+      for (const element of g) {
+        expect(element[0]).toEqual(element[1]);
+        u.push(element);
+      }
+      expect(u).toEqual(numbers.map(n => [n, n]));
+    });
+
+    test(testNames.partialOverlap, () => {
+      g = pairwiseTraversal(numbers, even, comparator);
+      u = [];
+      for (const element of g) {
+        u.push(element);
+      }
+      expect(u).toEqual(numbers.map(n => [n, n % 2 === 0 ? n : null]));
+
+      g = pairwiseTraversal(numbers, odd, comparator);
+      u = [];
+      for (const element of g) {
+        u.push(element);
+      }
+      expect(u).toEqual(numbers.map(n => [n, n % 2 === 1 ? n : null]));
+    });
+
+    test(testNames.noOverlap, () => {
+      g = pairwiseTraversal(even, odd, comparator);
+      u = [];
+      for (const element of g) {
+        u.push(element)
+      }
+      expect(u).toEqual(numbers.map(n => [n % 2 === 0 ? n : null, n % 2 === 1 ? n : null]));
+
+      g = pairwiseTraversal(odd, even, comparator);
+      u = [];
+      for (const element of g) {
+        u.push(element)
+      }
+      expect(u).toEqual(numbers.map(n => [n % 2 === 1 ? n : null, n % 2 === 0 ? n : null]));
     });
   });
 });

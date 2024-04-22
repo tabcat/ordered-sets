@@ -134,3 +134,54 @@ export function* readArray<T>(
     start++;
   }
 }
+
+export type PairwiseElement<T> = [T, null] | [null, T] | [T, T]
+
+export function* pairwiseTraversal <T>(source: T[], target: T[], comparator: (a: T, b: T) => number,): Generator<PairwiseElement<T>> {
+  for (const [i, j, order] of dualTraversal(source, target, comparator)) {
+    switch (true) {
+      case order < 0:
+        yield [safeArrayAccess(source, i), null];
+        break
+      case order > 0:
+        yield [null, safeArrayAccess(target, j)];
+        break
+      default: // order === 0
+        yield [safeArrayAccess(source, i), safeArrayAccess(target, j)]
+    }
+
+    // if source is exausted
+    if (order <= 0 && i === source.length - 1) {
+      if (j >= 0) { // j could be -1
+        if (order < 0) { // if order is not equal then also yield target[j]
+          yield [null, safeArrayAccess(target, j)];
+        }
+
+        if (j < target.length - 1) {
+          // yield the rest of target
+          for (const element of readArray(target, j + 1)) {
+            yield [null, element];
+          }
+          break;
+        }
+      }
+    }
+
+    // if target is exausted
+    if (order >= 0 && j === target.length - 1) {
+      if (i >= 0) { // i could be -1
+        if (order > 0) { // if order is not equal then also yield source[i]
+          yield [safeArrayAccess(source, i), null];
+        }
+
+        if (i < source.length - 1) {
+          // yield the rest of source
+          for (const element of readArray(source, i + 1)) {
+            yield [element, null];
+          }
+          break;
+        }
+      }
+    }
+  }
+}

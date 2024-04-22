@@ -1,4 +1,4 @@
-import { safeArrayAccess, dualTraversal, readArray } from "./util.js";
+import { safeArrayAccess, dualTraversal, readArray, pairwiseTraversal } from "./util.js";
 
 /**
  * Yields the difference of two ordered sets.
@@ -48,7 +48,7 @@ export function* difference<T>(
 export function* symmetric<T>(
   minuend: T[],
   subtrahend: T[],
-  comparator: (a: T, b: T) => number,
+  comparator: (a: T, b: T) => number
 ): Generator<T> {
   for (const [s, t] of diff(minuend, subtrahend, comparator)) {
     yield (s ?? t)!;
@@ -67,50 +67,11 @@ export type Diff<T> = [T, null] | [null, T];
 export function* diff<T>(
   source: T[],
   target: T[],
-  comparator: (a: T, b: T) => number,
+  comparator: (a: T, b: T) => number
 ): Generator<Diff<T>> {
-  let pastSource = false;
-  let pastTarget = false;
-
-  for (const [i, j, order] of dualTraversal(source, target, comparator)) {
-    if (pastSource) {
-      for (const element of readArray(target, j)) {
-        yield [null, element];
-      }
-      break;
-    }
-
-    if (pastTarget) {
-      for (const element of readArray(source, i)) {
-        yield [element, null];
-      }
-      break;
-    }
-
-    if (order < 0) {
-      yield [safeArrayAccess(source, i), null];
-    }
-
-    if (order > 0) {
-      yield [null, safeArrayAccess(target, j)];
-    }
-
-    // see if source is exausted
-    if (order <= 0 && i === source.length - 1) {
-      pastSource = true;
-      // if order is not equal then also yield target[j]
-      if (order < 0 && j > 0) { // j could be -1
-        yield [null, safeArrayAccess(target, j)];
-      }
-    }
-
-    // see if target is exausted
-    if (order >= 0 && j === target.length - 1) {
-      pastTarget = true;
-      // if order is not equal then also yield source[i]
-      if (order > 0 && i > 0) { // i could be -1
-        yield [safeArrayAccess(source, i), null];
-      }
+  for (const [s, t] of pairwiseTraversal(source, target, comparator)) {
+    if (s === null || t === null) {
+      yield [s, t] as Diff<T>
     }
   }
 }
