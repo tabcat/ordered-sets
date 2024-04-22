@@ -135,25 +135,31 @@ export function* readArray<T>(
   }
 }
 
-export type PairwiseElement<T> = [T, null] | [null, T] | [T, T]
+export type PairwiseElement<T> = [T, null] | [null, T] | [T, T];
 
-export function* pairwiseTraversal <T>(source: T[], target: T[], comparator: (a: T, b: T) => number,): Generator<PairwiseElement<T>> {
+export function* pairwiseTraversal<T>(
+  source: T[],
+  target: T[],
+  comparator: (a: T, b: T) => number,
+): Generator<PairwiseElement<T>> {
   for (const [i, j, order] of dualTraversal(source, target, comparator)) {
     switch (true) {
       case order < 0:
         yield [safeArrayAccess(source, i), null];
-        break
+        break;
       case order > 0:
         yield [null, safeArrayAccess(target, j)];
-        break
+        break;
       default: // order === 0
-        yield [safeArrayAccess(source, i), safeArrayAccess(target, j)]
+        yield [safeArrayAccess(source, i), safeArrayAccess(target, j)];
     }
 
     // if source is exausted
     if (order <= 0 && i === source.length - 1) {
-      if (j >= 0) { // j could be -1
-        if (order < 0) { // if order is not equal then also yield target[j]
+      if (j >= 0) {
+        // j could be -1
+        if (order < 0) {
+          // if order is not equal then also yield target[j]
           yield [null, safeArrayAccess(target, j)];
         }
 
@@ -169,8 +175,10 @@ export function* pairwiseTraversal <T>(source: T[], target: T[], comparator: (a:
 
     // if target is exausted
     if (order >= 0 && j === target.length - 1) {
-      if (i >= 0) { // i could be -1
-        if (order > 0) { // if order is not equal then also yield source[i]
+      if (i >= 0) {
+        // i could be -1
+        if (order > 0) {
+          // if order is not equal then also yield source[i]
           yield [safeArrayAccess(source, i), null];
         }
 

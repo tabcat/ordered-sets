@@ -1,4 +1,9 @@
-import { safeArrayAccess, dualTraversal, readArray, pairwiseTraversal } from "./util.js";
+import {
+  safeArrayAccess,
+  dualTraversal,
+  readArray,
+  pairwiseTraversal,
+} from "./util.js";
 
 /**
  * Yields the difference of two ordered sets.
@@ -48,7 +53,7 @@ export function* difference<T>(
 export function* symmetric<T>(
   minuend: T[],
   subtrahend: T[],
-  comparator: (a: T, b: T) => number
+  comparator: (a: T, b: T) => number,
 ): Generator<T> {
   for (const [s, t] of diff(minuend, subtrahend, comparator)) {
     yield (s ?? t)!;
@@ -67,11 +72,11 @@ export type Diff<T> = [T, null] | [null, T];
 export function* diff<T>(
   source: T[],
   target: T[],
-  comparator: (a: T, b: T) => number
+  comparator: (a: T, b: T) => number,
 ): Generator<Diff<T>> {
   for (const [s, t] of pairwiseTraversal(source, target, comparator)) {
     if (s === null || t === null) {
-      yield [s, t] as Diff<T>
+      yield [s, t] as Diff<T>;
     }
   }
 }

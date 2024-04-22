@@ -13,6 +13,6 @@ export function* union<T>(
   comparator: (a: T, b: T) => number,
 ): Generator<T> {
   for (const [s, t] of pairwiseTraversal(source, target, comparator)) {
-    yield (s ?? t)!
-   }
+    yield (s ?? t)!;
+  }
 }
