@@ -33,7 +33,7 @@ May be useful in the following cases:
 
 - Set elements must remain in order.
 - Set elements are expensive to store as primitives.
-- Set sizes are large (>500,000 elements)
+- Set sizes are large (>10,000 elements)
 
 If none of these apply, it's probably better to implement the needed operations using Javascript's Set class.
 
