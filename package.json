@@ -23,6 +23,10 @@
       "types": "./dist/src/intersection.d.ts",
       "import": "./dist/src/intersection.js"
     },
+    "./split": {
+      "types": "./dist/src/split.d.ts",
+      "import": "./dist/src/split.js"
+    },
     "./union": {
       "types": "./dist/src/union.d.ts",
       "import": "./dist/src/union.js"
