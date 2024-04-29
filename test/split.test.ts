@@ -16,7 +16,7 @@ describe("split", () => {
     });
 
     test(testNames.firstEmpty, () => {
-      expect([...split([], numbers, comparator)]).toEqual([]);
+      expect([...split([], numbers, comparator)]).toEqual(numbers.map(_ => []));
     });
 
     test(testNames.secondEmpty, () => {
@@ -49,7 +49,7 @@ describe("split", () => {
 
     test(testNames.noOverlap, () => {
       expect([...split(even, odd, comparator)]).toEqual(even.map((n) => [n]));
-      expect([...split(odd, even, comparator)]).toEqual(odd.map((n) => [n]));
+      expect([...split(odd, even, comparator)]).toEqual([[], ...odd.map((n) => [n])]);
     });
   });
 });

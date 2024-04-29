@@ -1,7 +1,7 @@
 import { pairwiseTraversal } from "./util";
 
 /**
- * Splits a set into multiple sets at sector points
+ * Splits a set into multiple sets at sector points.
  * 
  * @param source - Set to split at each sector point (inclusive)
  * @param sectors - Set of sector points
@@ -15,8 +15,8 @@ export function* split <T>(source: T[], sectors: T[], comparator: (a: T, b: T) =
       section.push(a)
     }
 
-    // only split if b is not null and section has elements OR source is exausted
-    if ((b !== null && section.length > 0) || a === source[source.length - 1]) {
+    // only split if b is not null OR source is exausted
+    if (b !== null || a === source[source.length - 1]) {
       yield section
       section = []
 
