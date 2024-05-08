@@ -13,7 +13,7 @@ describe("split", () => {
 
   describe("finds split of two ordered sets", () => {
     test(testNames.firstAndSecondEmpty, () => {
-      expect([...split(empty(), empty(), comparator)]).toEqual([]);
+      expect([...split(empty(), empty(), comparator)]).toEqual([[]]);
     });
 
     test(testNames.firstEmpty, () => {

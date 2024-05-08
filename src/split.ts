@@ -12,9 +12,12 @@ export function* split<T>(
   sectors: Iterable<T>,
   comparator: (a: T, b: T) => number,
 ): Generator<T[]> {
+  let empty = true;
   let section: T[] = [];
 
   for (const [a, b] of pairwiseTraversal(source, sectors, comparator)) {
+    if (empty === true) empty = false;
+
     if (a != null) {
       section.push(a);
     }
@@ -25,5 +28,5 @@ export function* split<T>(
     }
   }
 
-  if (section.length > 0) yield section;
+  if (section.length > 0 || empty) yield section;
 }
