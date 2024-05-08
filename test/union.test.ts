@@ -1,6 +1,7 @@
 import { describe, test, expect } from "vitest";
+import { slice } from "iter-tools-es";
 import { union } from "../src/union.js";
-import { comparator, even, numbers, odd } from "./helpers/sets.js";
+import { comparator, empty, even, numbers, odd } from "./helpers/sets.js";
 import { isGenerator } from "./helpers/isGenerator.js";
 import { testNames } from "./helpers/test-names.js";
 
@@ -11,35 +12,41 @@ describe("union", () => {
 
   describe("finds union of two ordered sets", () => {
     test(testNames.firstAndSecondEmpty, () => {
-      expect([...union([], [], comparator)]).toEqual([]);
+      expect([...union(empty(), empty(), comparator)]).toEqual([]);
     });
 
     test(testNames.firstEmpty, () => {
-      expect([...union([], numbers, comparator)]).toEqual(numbers);
+      expect([...union(empty(), numbers(), comparator)]).toEqual([
+        ...numbers(),
+      ]);
     });
 
     test(testNames.secondEmpty, () => {
-      expect([...union(numbers, [], comparator)]).toEqual(numbers);
+      expect([...union(numbers(), empty(), comparator)]).toEqual([
+        ...numbers(),
+      ]);
     });
 
     test(testNames.identicalSingle, () => {
       expect([
-        ...union(numbers.slice(0, 1), numbers.slice(0, 1), comparator),
-      ]).toEqual(numbers.slice(0, 1));
+        ...union(slice(0, 1, numbers()), slice(0, 1, numbers()), comparator),
+      ]).toEqual([...slice(0, 1, numbers())]);
     });
 
     test(testNames.identical, () => {
-      expect([...union(numbers, numbers, comparator)]).toEqual(numbers);
+      expect([...union(numbers(), numbers(), comparator)]).toEqual([
+        ...numbers(),
+      ]);
     });
 
     test(testNames.partialOverlap, () => {
-      expect([...union(numbers, even, comparator)]).toEqual(numbers);
-      expect([...union(numbers, odd, comparator)]).toEqual(numbers);
+      expect([...union(numbers(), even(), comparator)]).toEqual([...numbers()]);
+      expect([...union(numbers(), odd(), comparator)]).toEqual([...numbers()]);
     });
 
     test(testNames.noOverlap, () => {
-      expect([...union(even, odd, comparator)]).toEqual(numbers);
-      expect([...union(odd, even, comparator)]).toEqual(numbers);
+      expect([...union(even(), odd(), comparator)]).toEqual([...numbers()]);
+      expect([...union(odd(), even(), comparator)]).toEqual([...numbers()]);
     });
   });
 });

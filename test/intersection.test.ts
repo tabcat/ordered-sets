@@ -1,33 +1,56 @@
 import { describe, test, expect } from "vitest";
+import { slice } from "iter-tools-es";
 import { intersection } from "../src/intersection.js";
-import { comparator, even, numbers, odd } from "./helpers/sets.js";
+import { comparator, empty, even, numbers, odd } from "./helpers/sets.js";
 import { isGenerator } from "./helpers/isGenerator.js";
+import { testNames } from "./helpers/test-names.js";
 
 describe("intersection", () => {
-  test("finds intersection of two ordered sets", () => {
-    expect(isGenerator(intersection([], [], comparator))).toBe(true);
+  test(testNames.returnsGenerator, () => {
+    expect(isGenerator(intersection(empty(), empty(), comparator))).toBe(true);
+  });
 
-    // identitical sets
-    expect([...intersection(numbers, numbers, comparator)]).toEqual(numbers);
+  describe("finds intersection of two ordered sets", () => {
+    test(testNames.firstAndSecondEmpty, () => {
+      expect([...intersection(empty(), empty(), comparator)]).toEqual([]);
+    });
 
-    // identitical sets (single-element)
-    expect([
-      ...intersection(numbers.slice(0, 1), numbers.slice(0, 1), comparator),
-    ]).toEqual([0]);
+    test(testNames.firstEmpty, () => {
+      expect([...intersection(empty(), numbers(), comparator)]).toEqual([]);
+    });
 
-    // empty A
-    expect([...intersection([], numbers, comparator)]).toEqual([]);
+    test(testNames.secondEmpty, () => {
+      expect([...intersection(numbers(), empty(), comparator)]).toEqual([]);
+    });
 
-    // empty B
-    expect([...intersection(numbers, [], comparator)]).toEqual([]);
+    test(testNames.identicalSingle, () => {
+      expect([
+        ...intersection(
+          slice(0, 1, numbers()),
+          slice(0, 1, numbers()),
+          comparator,
+        ),
+      ]).toEqual([0]);
+    });
 
-    // empty A and B
-    expect([...intersection([], [], comparator)]).toEqual([]);
+    test(testNames.identical, () => {
+      expect([...intersection(numbers(), numbers(), comparator)]).toEqual([
+        ...numbers(),
+      ]);
+    });
 
-    // partial overlap
-    expect([...intersection(numbers, even, comparator)]).toEqual(even);
+    test(testNames.partialOverlap, () => {
+      expect([...intersection(numbers(), even(), comparator)]).toEqual([
+        ...even(),
+      ]);
+      expect([...intersection(numbers(), odd(), comparator)]).toEqual([
+        ...odd(),
+      ]);
+    });
 
-    // no overlap
-    expect([...intersection(even, odd, comparator)]).toEqual([]);
+    test(testNames.noOverlap, () => {
+      expect([...intersection(even(), odd(), comparator)]).toEqual([]);
+      expect([...intersection(odd(), even(), comparator)]).toEqual([]);
+    });
   });
 });

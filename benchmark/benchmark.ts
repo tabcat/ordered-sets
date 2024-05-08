@@ -4,10 +4,11 @@ import { safeArrayAccess } from "../src/util.js"
 import { difference, symmetric } from "../src/difference.js"
 import { union } from '../src/union.js'
 import { intersection } from "../src/intersection.js"
+import { filter, map } from "iter-tools-es"
 
 const setSizes = [1000]
-const lotsOfArrays = setSizes.map(createNumbers)
-const lotsOfSets = lotsOfArrays.map(x => new Set(x))
+const lotsOfIterables = setSizes.map(size => () => createNumbers(size))
+const lotsOfSets = [...map(iter => new Set([...iter()]), lotsOfIterables)]
 
 // Set class implementation of a set operation
 interface SetImpl {
@@ -16,11 +17,11 @@ interface SetImpl {
 
 // ordered-set implementation of a set operation
 interface OrderedImpl {
-  (s: number[], t: number[], comparator: (a: number, b: number) => number): number[]
+  (s: Iterable<number>, t: Iterable<number>, comparator: (a: number, b: number) => number): Generator<number>
 }
 
 const versusSet = (setImpl: SetImpl, orderedImpl: OrderedImpl, name: string, index: number): void => {
-  const sample = safeArrayAccess(lotsOfArrays, index).filter(() => Math.random() > 0.5)
+  const sample = filter(() => Math.random() > 0.5, safeArrayAccess(lotsOfIterables, index)())
   const sampleSet = new Set(sample)
 
   new Benchmark.Suite()
@@ -28,7 +29,7 @@ const versusSet = (setImpl: SetImpl, orderedImpl: OrderedImpl, name: string, ind
     setImpl(safeArrayAccess(lotsOfSets, index), sampleSet)
   })
   .add(`${name}\timpl: ordered-sets\tsize: ${safeArrayAccess(setSizes, index)}`, (): void => {
-    for (const _ of orderedImpl(safeArrayAccess(lotsOfArrays, index), sample, comparator)) {}
+    for (const _ of orderedImpl(safeArrayAccess(lotsOfIterables, index)(), sample, comparator)) {}
   })
   .on('cycle', (event: any) => {
     console.log(String(event.target))
@@ -108,11 +109,7 @@ const _intersection = <T>(source: Set<T>, target: Set<T>): Set<T> => {
   return r
 }
 
-// @ts-expect-error
 versusSets(_difference, difference, 'difference')
-// @ts-expect-error
 versusSets(_symmetric, symmetric, 'symmetric')
-// @ts-expect-error
 versusSets(_union, union, 'union\t')
-// @ts-expect-error
 versusSets(_intersection, intersection, 'intersection')

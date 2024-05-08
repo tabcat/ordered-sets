@@ -17,88 +17,12 @@ export function safeArrayAccess<T>(array: T[], index: number): T {
   return access;
 }
 
-/**
- * Yields array indexes and element comparison from traversing two arrays in order.
- *
- * @param first - First array to traverse
- * @param second - Second array to traverse
- * @param comparator - Used to compare two set elements, same as Array.sort parameter
- */
-export function* dualTraversal<T>(
-  first: T[],
-  second: T[],
-  comparator: (a: T, b: T) => number,
-): Generator<[number, number, number]> {
-  // can handle empty sets as parameters
-  let i = -1;
-  let j = -1;
-  if (first.length > 0) i = 0;
-  if (second.length > 0) j = 0;
-
-  while (i >= 0 && i < first.length && j >= 0 && j < second.length) {
-    const order = comparator(
-      safeArrayAccess(first, i),
-      safeArrayAccess(second, j),
-    );
-
-    yield [i, j, order];
-
-    if (order < 0) {
-      // first element < second element
-      // increment first
-      i++;
-
-      // if i was last index, also increment j
-      if (i === first.length) {
-        j++;
-      }
-    } else if (order > 0) {
-      // first element > second element
-      // increment second
-      j++;
-
-      // if j was last index, also increment i
-      if (j === second.length) {
-        i++;
-      }
-    } else {
-      // first element = second element
-      // increment both
-      i++;
-      j++;
-    }
-  }
-
-  while (i >= 0 && i < first.length) {
-    // only second set is empty
-    if (j === -1) {
-      yield [i, j, -1]; // -1 because first[i] (comparator a param) is < undefined
-    } else {
-      yield [
-        i,
-        j - 1,
-        comparator(safeArrayAccess(first, i), safeArrayAccess(second, j - 1)),
-      ];
-    }
-
-    i++;
-  }
-
-  while (j >= 0 && j < second.length) {
-    // only first set is empty
-    if (i === -1) {
-      yield [i, j, 1]; // 1 because second[j] (comparator b param) is < undefined
-    } else {
-      yield [
-        i - 1,
-        j,
-        comparator(safeArrayAccess(first, i - 1), safeArrayAccess(second, j)),
-      ];
-    }
-
-    j++;
-  }
-}
+export type Range = [
+  // inclusive start of range
+  start: number,
+  // exclusive end of range
+  end: number,
+];
 
 /**
  * Yields elements of an array from start index to end index.
@@ -137,59 +61,77 @@ export function* readArray<T>(
 
 export type PairwiseElement<T> = [T, null] | [null, T] | [T, T];
 
+/**
+ * Only returns true if IteratorResult.value is undefined and IteratorResult.done is true
+ *
+ * @param result - Iterator Result
+ * @returns
+ */
+export const iteratorIsDone = (result: IteratorResult<unknown>): boolean =>
+  result.value === undefined && result.done === true;
+
+/**
+ * Yields pairwise traversal of two ordered sets.
+ *
+ * @param source - Source ordered set
+ * @param target - Target ordered set
+ * @param comparator - Used to compare two set elements, same as Array.sort parameter
+ */
 export function* pairwiseTraversal<T>(
-  source: T[],
-  target: T[],
+  source: Iterable<T>,
+  target: Iterable<T>,
   comparator: (a: T, b: T) => number,
 ): Generator<PairwiseElement<T>> {
-  for (const [i, j, order] of dualTraversal(source, target, comparator)) {
+  const iteratorS = source[Symbol.iterator]();
+  const iteratorT = target[Symbol.iterator]();
+
+  // initialize s and t
+  let s = iteratorS.next();
+  let t = iteratorT.next();
+
+  let sourceDone = iteratorIsDone(s);
+  let targetDone = iteratorIsDone(t);
+
+  while (!sourceDone && !targetDone) {
+    const order = comparator(s.value, t.value);
+
     switch (true) {
       case order < 0:
-        yield [safeArrayAccess(source, i), null];
+        yield [s.value, null];
+        s = iteratorS.next();
         break;
       case order > 0:
-        yield [null, safeArrayAccess(target, j)];
+        yield [null, t.value];
+        t = iteratorT.next();
         break;
-      default: // order === 0
-        yield [safeArrayAccess(source, i), safeArrayAccess(target, j)];
+      case order === 0:
+        yield [s.value, t.value];
+        s = iteratorS.next();
+        t = iteratorT.next();
+        break;
     }
 
-    // if source is exausted
-    if (order <= 0 && i === source.length - 1) {
-      if (j >= 0) {
-        // j could be -1
-        if (order < 0) {
-          // if order is not equal then also yield target[j]
-          yield [null, safeArrayAccess(target, j)];
-        }
-
-        if (j < target.length - 1) {
-          // yield the rest of target
-          for (const element of readArray(target, j + 1)) {
-            yield [null, element];
-          }
-          break;
-        }
-      }
+    if (s.done === true) {
+      sourceDone = iteratorIsDone(s);
     }
+    if (t.done === true) {
+      targetDone = iteratorIsDone(t);
+    }
+  }
 
-    // if target is exausted
-    if (order >= 0 && j === target.length - 1) {
-      if (i >= 0) {
-        // i could be -1
-        if (order > 0) {
-          // if order is not equal then also yield source[i]
-          yield [safeArrayAccess(source, i), null];
-        }
+  while (!sourceDone) {
+    yield [s.value, null];
+    s = iteratorS.next();
+    if (s.done === true) {
+      sourceDone = iteratorIsDone(s);
+    }
+  }
 
-        if (i < source.length - 1) {
-          // yield the rest of source
-          for (const element of readArray(source, i + 1)) {
-            yield [element, null];
-          }
-          break;
-        }
-      }
+  while (!targetDone) {
+    yield [null, t.value];
+    t = iteratorT.next();
+    if (t.done === true) {
+      targetDone = iteratorIsDone(t);
     }
   }
 }

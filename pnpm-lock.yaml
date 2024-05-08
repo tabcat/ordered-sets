@@ -38,6 +38,9 @@ devDependencies:
   globals:
     specifier: ^15.0.0
     version: 15.0.0
+  iter-tools-es:
+    specifier: ^7.5.3
+    version: 7.5.3
   prettier:
     specifier: ^3.2.5
     version: 3.2.5
@@ -1886,6 +1889,10 @@ packages:
 
   /isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
+    dev: true
+
+  /iter-tools-es@7.5.3:
+    resolution: {integrity: sha512-xj+T3W48RBrooJhafZZ3m8l0JQ/GBmRTcGfqJx4rA/IevwPRkff/919C8EgfQP3HPTnJnHVi+0KgeGKYjoKzvg==}
     dev: true
 
   /js-tokens@9.0.0:

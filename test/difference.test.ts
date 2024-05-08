@@ -1,137 +1,162 @@
 import { describe, test, expect } from "vitest";
+import { map, slice } from "iter-tools-es";
 import { difference, symmetric, diff } from "../src/difference.js";
-import { comparator, even, numbers, odd } from "./helpers/sets.js";
+import { comparator, empty, even, numbers, odd } from "./helpers/sets.js";
 import { isGenerator } from "./helpers/isGenerator.js";
 import { testNames } from "./helpers/test-names.js";
 
 describe("difference", () => {
   test(testNames.returnsGenerator, () => {
-    expect(isGenerator(difference([], [], comparator))).toBe(true);
+    expect(isGenerator(difference(empty(), empty(), comparator))).toBe(true);
   });
 
   describe("finds set difference", () => {
     test(testNames.firstAndSecondEmpty, () => {
-      expect([...difference([], [], comparator)]).toEqual([]);
+      expect([...difference(empty(), empty(), comparator)]).toEqual([]);
     });
 
     test(testNames.firstEmpty, () => {
-      expect([...difference([], numbers, comparator)]).toEqual([]);
+      expect([...difference(empty(), numbers(), comparator)]).toEqual([]);
     });
 
     test(testNames.secondEmpty, () => {
-      expect([...difference(numbers, [], comparator)]).toEqual(numbers);
+      expect([...difference(numbers(), empty(), comparator)]).toEqual([
+        ...numbers(),
+      ]);
     });
 
     test(testNames.identicalSingle, () => {
       expect([
-        ...difference(numbers.slice(0, 1), numbers.slice(0, 1), comparator),
+        ...difference(
+          slice(0, 1, numbers()),
+          slice(0, 1, numbers()),
+          comparator,
+        ),
       ]).toEqual([]);
     });
 
     test(testNames.identical, () => {
-      expect([...difference(numbers, numbers, comparator)]).toEqual([]);
+      expect([...difference(numbers(), numbers(), comparator)]).toEqual([]);
     });
 
     test(testNames.partialOverlap, () => {
-      expect([...difference(numbers, even, comparator)]).toEqual(odd);
-      expect([...difference(numbers, odd, comparator)]).toEqual(even);
+      expect([...difference(numbers(), even(), comparator)]).toEqual([
+        ...odd(),
+      ]);
+      expect([...difference(numbers(), odd(), comparator)]).toEqual([
+        ...even(),
+      ]);
     });
 
     test(testNames.noOverlap, () => {
-      expect([...difference(even, odd, comparator)]).toEqual(even);
-      expect([...difference(odd, even, comparator)]).toEqual(odd);
+      expect([...difference(even(), odd(), comparator)]).toEqual([...even()]);
+      expect([...difference(odd(), even(), comparator)]).toEqual([...odd()]);
     });
   });
 });
 
 describe("symmetric", () => {
   test(testNames.returnsGenerator, () => {
-    expect(isGenerator(symmetric([], [], comparator))).toBe(true);
+    expect(isGenerator(symmetric(empty(), empty(), comparator))).toBe(true);
   });
 
   describe("finds set symmetric difference", () => {
     test(testNames.firstAndSecondEmpty, () => {
-      expect([...symmetric([], [], comparator)]).toEqual([]);
+      expect([...symmetric(empty(), empty(), comparator)]).toEqual([]);
     });
 
     test(testNames.firstEmpty, () => {
-      expect([...symmetric([], numbers, comparator)]).toEqual(numbers);
+      expect([...symmetric(empty(), numbers(), comparator)]).toEqual([
+        ...numbers(),
+      ]);
     });
 
     test(testNames.secondEmpty, () => {
-      expect([...symmetric(numbers, [], comparator)]).toEqual(numbers);
+      expect([...symmetric(numbers(), empty(), comparator)]).toEqual([
+        ...numbers(),
+      ]);
     });
 
     test(testNames.identicalSingle, () => {
       expect([
-        ...symmetric(numbers.slice(0, 1), numbers.slice(0, 1), comparator),
+        ...symmetric(
+          slice(0, 1, numbers()),
+          slice(0, 1, numbers()),
+          comparator,
+        ),
       ]).toEqual([]);
     });
 
     test(testNames.identical, () => {
-      expect([...symmetric(numbers, numbers, comparator)]).toEqual([]);
+      expect([...symmetric(numbers(), numbers(), comparator)]).toEqual([]);
     });
 
     test(testNames.partialOverlap, () => {
-      expect([...symmetric(numbers, even, comparator)]).toEqual(odd);
-      expect([...symmetric(numbers, odd, comparator)]).toEqual(even);
+      expect([...symmetric(numbers(), even(), comparator)]).toEqual([...odd()]);
+      expect([...symmetric(numbers(), odd(), comparator)]).toEqual([...even()]);
     });
 
     test(testNames.noOverlap, () => {
-      expect([...symmetric(even, odd, comparator)]).toEqual(numbers);
-      expect([...symmetric(odd, even, comparator)]).toEqual(numbers);
+      expect([...symmetric(even(), odd(), comparator)]).toEqual([...numbers()]);
+      expect([...symmetric(odd(), even(), comparator)]).toEqual([...numbers()]);
     });
   });
 });
 
 describe("diff", () => {
   test(testNames.returnsGenerator, () => {
-    expect(isGenerator(diff([], [], comparator))).toBe(true);
+    expect(isGenerator(diff(empty(), empty(), comparator))).toBe(true);
   });
 
   describe("finds pairwise set symmetric difference", () => {
     test(testNames.firstAndSecondEmpty, () => {
-      expect([...diff([], [], comparator)]).toEqual([]);
+      expect([...diff(empty(), empty(), comparator)]).toEqual([]);
     });
 
     test(testNames.firstEmpty, () => {
-      expect([...diff([], numbers, comparator)]).toEqual(
-        numbers.map((n) => [null, n]),
-      );
+      expect([...diff(empty(), numbers(), comparator)]).toEqual([
+        ...map((n) => [null, n], numbers()),
+      ]);
     });
 
     test(testNames.secondEmpty, () => {
-      expect([...diff(numbers, [], comparator)]).toEqual(
-        numbers.map((n) => [n, null]),
-      );
+      expect([...diff(numbers(), empty(), comparator)]).toEqual([
+        ...map((n) => [n, null], numbers()),
+      ]);
     });
 
     test(testNames.identicalSingle, () => {
       expect([
-        ...diff(numbers.slice(0, 1), numbers.slice(0, 1), comparator),
+        ...diff(slice(0, 1, numbers()), slice(0, 1, numbers()), comparator),
       ]).toEqual([]);
     });
 
     test(testNames.identical, () => {
-      expect([...diff(numbers, numbers, comparator)]).toEqual([]);
+      expect([...diff(numbers(), numbers(), comparator)]).toEqual([]);
     });
 
     test(testNames.partialOverlap, () => {
-      expect([...diff(numbers, even, comparator)]).toEqual(
-        odd.map((n) => [n, null]),
-      );
-      expect([...diff(numbers, odd, comparator)]).toEqual(
-        even.map((n) => [n, null]),
-      );
+      expect([...diff(numbers(), even(), comparator)]).toEqual([
+        ...map((n) => [n, null], odd()),
+      ]);
+      expect([...diff(numbers(), odd(), comparator)]).toEqual([
+        ...map((n) => [n, null], even()),
+      ]);
     });
 
     test(testNames.noOverlap, () => {
-      expect([...diff(even, odd, comparator)]).toEqual(
-        numbers.map((n) => [n % 2 === 0 ? n : null, n % 2 === 1 ? n : null]),
-      );
-      expect([...diff(odd, even, comparator)]).toEqual(
-        numbers.map((n) => [n % 2 === 1 ? n : null, n % 2 === 0 ? n : null]),
-      );
+      expect([...diff(even(), odd(), comparator)]).toEqual([
+        ...map(
+          (n) => [n % 2 === 0 ? n : null, n % 2 === 1 ? n : null],
+          numbers(),
+        ),
+      ]);
+      expect([...diff(odd(), even(), comparator)]).toEqual([
+        ...map(
+          (n) => [n % 2 === 1 ? n : null, n % 2 === 0 ? n : null],
+          numbers(),
+        ),
+      ]);
     });
   });
 });

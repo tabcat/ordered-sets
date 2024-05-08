@@ -1,10 +1,21 @@
-export const createNumbers = (n: number): number[] =>
-  new Array(n).fill(1).map((_v, i) => i);
+import { filter } from "iter-tools-es";
 
-export const numbers: number[] = createNumbers(8);
+export const createNumbers = function* (n: number): Generator<number> {
+  let i = 0;
+  while (i < n) {
+    yield i;
+    i++;
+  }
+};
 
-export const even: number[] = numbers.filter((x) => x % 2 === 0);
+export const numbers: () => Iterable<number> = () => createNumbers(8);
 
-export const odd: number[] = numbers.filter((x) => x % 2 === 1);
+export const even: () => Iterable<number> = () =>
+  filter((x: number) => x % 2 === 0, numbers());
+
+export const odd: () => Iterable<number> = () =>
+  filter((x: number) => x % 2 === 1, numbers());
+
+export const empty: () => Iterable<number> = () => createNumbers(0);
 
 export const comparator = (a: number, b: number): number => a - b;

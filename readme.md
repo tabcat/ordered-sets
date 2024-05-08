@@ -3,10 +3,9 @@
 Utilities for working with ordered sets.
 
 - Zero Dependencies
-- Uses Javascript Arrays
-- Efficient Diffs
+- Uses ES6 Iterables
 
-Core of library is the `dualTraversal` generator in [src/util.ts](https://github.com/tabcat/ordered-sets/blob/master/src/util.ts).
+Core of library is the `pairwiseTraversal` generator in [src/util.ts](https://github.com/tabcat/ordered-sets/blob/master/src/util.ts).
 
 ## API Docs
 
@@ -33,7 +32,6 @@ May be useful in the following cases:
 
 - Set elements must remain in order.
 - Set elements are expensive to store as primitives.
-- Set sizes are large (>10,000 elements)
 
 If none of these apply, it's probably better to implement the needed operations using Javascript's Set class.
 
@@ -49,14 +47,14 @@ pnpm benchmark
 Output should look something like this:
 
 ```
-difference      impl: Set               size: 1000 x 39,330 ops/sec ±0.95% (94 runs sampled)
-difference      impl: ordered-sets      size: 1000 x 34,476 ops/sec ±0.27% (98 runs sampled)
-symmetric       impl: Set               size: 1000 x 80,485 ops/sec ±1.22% (93 runs sampled)
-symmetric       impl: ordered-sets      size: 1000 x 25,945 ops/sec ±0.28% (101 runs sampled)
-union           impl: Set               size: 1000 x 45,971 ops/sec ±1.13% (91 runs sampled)
-union           impl: ordered-sets      size: 1000 x 25,897 ops/sec ±0.31% (98 runs sampled)
-intersection    impl: Set               size: 1000 x 44,982 ops/sec ±0.62% (95 runs sampled)
-intersection    impl: ordered-sets      size: 1000 x 36,325 ops/sec ±0.43% (99 runs sampled)
+difference      impl: Set               size: 1000 x 39,688 ops/sec ±0.22% (99 runs sampled)
+difference      impl: ordered-sets      size: 1000 x 23,496 ops/sec ±0.12% (98 runs sampled)
+symmetric       impl: Set               size: 1000 x 64,616 ops/sec ±0.16% (101 runs sampled)
+symmetric       impl: ordered-sets      size: 1000 x 16,703 ops/sec ±0.21% (100 runs sampled)
+union           impl: Set               size: 1000 x 50,969 ops/sec ±0.53% (99 runs sampled)
+union           impl: ordered-sets      size: 1000 x 23,659 ops/sec ±0.13% (101 runs sampled)
+intersection    impl: Set               size: 1000 x 46,803 ops/sec ±1.71% (92 runs sampled)
+intersection    impl: ordered-sets      size: 1000 x 35,847 ops/sec ±0.17% (101 runs sampled)
 ```
 
 ## Extension

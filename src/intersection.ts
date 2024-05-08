@@ -1,4 +1,4 @@
-import { safeArrayAccess, dualTraversal } from "./util.js";
+import { pairwiseTraversal } from "./util.js";
 
 /**
  * Yields the intersection of two ordered sets.
@@ -8,13 +8,13 @@ import { safeArrayAccess, dualTraversal } from "./util.js";
  * @param comparator - Used to compare two set elements, same as Array.sort parameter
  */
 export function* intersection<T>(
-  source: T[],
-  target: T[],
+  source: Iterable<T>,
+  target: Iterable<T>,
   comparator: (a: T, b: T) => number,
 ): Generator<T> {
-  for (const [, j, order] of dualTraversal(source, target, comparator)) {
-    if (order === 0) {
-      yield safeArrayAccess(target, j);
+  for (const [s, t] of pairwiseTraversal(source, target, comparator)) {
+    if (s != null && t != null) {
+      yield t;
     }
   }
 }
