@@ -18,11 +18,11 @@ export function* split<T>(
   for (const [a, b] of pairwiseTraversal(source, sectors, comparator)) {
     if (empty === true) empty = false;
 
-    if (a != null) {
+    if (a !== null) {
       section.push(a);
     }
 
-    if (b != null) {
+    if (b !== null) {
       yield section;
       section = [];
     }
@@ -51,11 +51,11 @@ export function* ranges<T>(
   )) {
     if (empty === true) empty = false;
 
-    if (element != null) {
+    if (element !== null) {
       range[1] += 1;
     }
 
-    if (sector != null) {
+    if (sector !== null) {
       yield range;
       range = [range[1], range[1]];
     }
