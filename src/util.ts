@@ -61,6 +61,8 @@ export function* readArray<T>(
 
 export type PairwiseElement<T> = [T, null] | [null, T] | [T, T];
 
+export type PairwiseDone = [source: boolean, target: boolean];
+
 /**
  * Only returns true if IteratorResult.value is undefined and IteratorResult.done is true
  *
@@ -81,7 +83,7 @@ export function* pairwiseTraversal<T>(
   source: Iterable<T>,
   target: Iterable<T>,
   comparator: (a: T, b: T) => number,
-): Generator<PairwiseElement<T>> {
+): Generator<[...PairwiseElement<T>, ...PairwiseDone]> {
   const iteratorS = source[Symbol.iterator]();
   const iteratorT = target[Symbol.iterator]();
 
@@ -97,15 +99,15 @@ export function* pairwiseTraversal<T>(
 
     switch (true) {
       case order < 0:
-        yield [s.value, null];
+        yield [s.value, null, sourceDone, targetDone];
         s = iteratorS.next();
         break;
       case order > 0:
-        yield [null, t.value];
+        yield [null, t.value, sourceDone, targetDone];
         t = iteratorT.next();
         break;
       case order === 0:
-        yield [s.value, t.value];
+        yield [s.value, t.value, sourceDone, targetDone];
         s = iteratorS.next();
         t = iteratorT.next();
         break;
@@ -120,7 +122,7 @@ export function* pairwiseTraversal<T>(
   }
 
   while (!sourceDone) {
-    yield [s.value, null];
+    yield [s.value, null, sourceDone, targetDone];
     s = iteratorS.next();
     if (s.done === true) {
       sourceDone = iteratorIsDone(s);
@@ -128,7 +130,7 @@ export function* pairwiseTraversal<T>(
   }
 
   while (!targetDone) {
-    yield [null, t.value];
+    yield [null, t.value, sourceDone, targetDone];
     t = iteratorT.next();
     if (t.done === true) {
       targetDone = iteratorIsDone(t);

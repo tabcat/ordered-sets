@@ -8,6 +8,7 @@ import {
   pairwiseTraversal,
   type PairwiseElement,
   readArray,
+  PairwiseDone,
 } from "../src/util.js";
 
 describe("safeArrayAccess", () => {
@@ -94,8 +95,8 @@ describe("pairwiseTraversal", () => {
   });
 
   describe("finds ordered traversal of two sets", () => {
-    let g: Generator<PairwiseElement<number>>;
-    let u: PairwiseElement<number>[];
+    let g: Generator<[...PairwiseElement<number>, ...PairwiseDone]>;
+    let u: [...PairwiseElement<number>, ...PairwiseDone][];
 
     test(testNames.firstAndSecondEmpty, () => {
       g = pairwiseTraversal(empty(), empty(), comparator);
@@ -114,7 +115,7 @@ describe("pairwiseTraversal", () => {
         expect(element[1]).toBeGreaterThanOrEqual(0);
         u.push(element);
       }
-      expect(u).toEqual([...map((n) => [null, n], numbers())]);
+      expect(u).toEqual([...map((n) => [null, n, true, false], numbers())]);
     });
 
     test(testNames.secondEmpty, () => {
@@ -124,7 +125,7 @@ describe("pairwiseTraversal", () => {
         expect(element[1]).toBe(null);
         u.push(element);
       }
-      expect(u).toEqual([...map((n) => [n, null], numbers())]);
+      expect(u).toEqual([...map((n) => [n, null, false, true], numbers())]);
     });
 
     test(testNames.identicalSingle, () => {
@@ -138,7 +139,9 @@ describe("pairwiseTraversal", () => {
         expect(element[0]).toBe(element[1]);
         u.push(element);
       }
-      expect(u).toEqual([...map((n) => [n, n], slice(0, 1, numbers()))]);
+      expect(u).toEqual([
+        ...map((n) => [n, n, false, false], slice(0, 1, numbers())),
+      ]);
     });
 
     test(testNames.identical, () => {
@@ -148,7 +151,7 @@ describe("pairwiseTraversal", () => {
         expect(element[0]).toBe(element[1]);
         u.push(element);
       }
-      expect(u).toEqual([...map((n) => [n, n], numbers())]);
+      expect(u).toEqual([...map((n) => [n, n, false, false], numbers())]);
     });
 
     test(testNames.partialOverlap, () => {
@@ -158,7 +161,15 @@ describe("pairwiseTraversal", () => {
         u.push(element);
       }
       expect(u).toEqual([
-        ...map((n) => [n, n % 2 === 0 ? n : null], numbers()),
+        ...map(
+          (n, i) => [
+            n,
+            n % 2 === 0 ? n : null,
+            false,
+            i === [...numbers()].length - 1,
+          ],
+          numbers(),
+        ),
       ]);
 
       g = pairwiseTraversal(numbers(), odd(), comparator);
@@ -167,7 +178,7 @@ describe("pairwiseTraversal", () => {
         u.push(element);
       }
       expect(u).toEqual([
-        ...map((n) => [n, n % 2 === 1 ? n : null], numbers()),
+        ...map((n) => [n, n % 2 === 1 ? n : null, false, false], numbers()),
       ]);
     });
 
@@ -179,7 +190,12 @@ describe("pairwiseTraversal", () => {
       }
       expect(u).toEqual([
         ...map(
-          (n) => [n % 2 === 0 ? n : null, n % 2 === 1 ? n : null],
+          (n, i) => [
+            n % 2 === 0 ? n : null,
+            n % 2 === 1 ? n : null,
+            i === [...numbers()].length - 1,
+            false,
+          ],
           numbers(),
         ),
       ]);
@@ -191,7 +207,12 @@ describe("pairwiseTraversal", () => {
       }
       expect(u).toEqual([
         ...map(
-          (n) => [n % 2 === 1 ? n : null, n % 2 === 0 ? n : null],
+          (n, i) => [
+            n % 2 === 1 ? n : null,
+            n % 2 === 0 ? n : null,
+            false,
+            i === [...numbers()].length - 1,
+          ],
           numbers(),
         ),
       ]);
