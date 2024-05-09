@@ -13,8 +13,8 @@ export function* difference<T>(
   comparator: (a: T, b: T) => number,
 ): Generator<T> {
   for (const [m, s] of pairwiseTraversal(minuend, subtrahend, comparator)) {
-    if (m != null && s == null) {
-      yield m;
+    if (s === null) {
+      yield m!;
     }
   }
 }
@@ -31,8 +31,14 @@ export function* symmetric<T>(
   subtrahend: Iterable<T>,
   comparator: (a: T, b: T) => number,
 ): Generator<T> {
-  for (const [s, t] of diff(minuend, subtrahend, comparator)) {
-    yield (s ?? t)!;
+  for (const [s, t] of pairwiseTraversal(minuend, subtrahend, comparator)) {
+    if (s === null) {
+      yield t!
+    }
+
+    if (t === null) {
+      yield s!
+    }
   }
 }
 

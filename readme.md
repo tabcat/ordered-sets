@@ -47,14 +47,14 @@ pnpm benchmark
 Output should look something like this:
 
 ```
-difference      impl: Set               size: 1000 x 39,688 ops/sec ±0.22% (99 runs sampled)
-difference      impl: ordered-sets      size: 1000 x 23,496 ops/sec ±0.12% (98 runs sampled)
-symmetric       impl: Set               size: 1000 x 64,616 ops/sec ±0.16% (101 runs sampled)
-symmetric       impl: ordered-sets      size: 1000 x 16,703 ops/sec ±0.21% (100 runs sampled)
-union           impl: Set               size: 1000 x 50,969 ops/sec ±0.53% (99 runs sampled)
-union           impl: ordered-sets      size: 1000 x 23,659 ops/sec ±0.13% (101 runs sampled)
-intersection    impl: Set               size: 1000 x 46,803 ops/sec ±1.71% (92 runs sampled)
-intersection    impl: ordered-sets      size: 1000 x 35,847 ops/sec ±0.17% (101 runs sampled)
+difference      impl: Set               size: 1000 x 43,716 ops/sec ±0.72% (92 runs sampled)
+difference      impl: ordered-sets      size: 1000 x 22,283 ops/sec ±0.16% (97 runs sampled)
+symmetric       impl: Set               size: 1000 x 74,039 ops/sec ±0.17% (96 runs sampled)
+symmetric       impl: ordered-sets      size: 1000 x 22,269 ops/sec ±0.21% (98 runs sampled)
+union           impl: Set               size: 1000 x 49,286 ops/sec ±0.21% (97 runs sampled)
+union           impl: ordered-sets      size: 1000 x 22,304 ops/sec ±0.12% (100 runs sampled)
+intersection    impl: Set               size: 1000 x 44,572 ops/sec ±1.70% (89 runs sampled)
+intersection    impl: ordered-sets      size: 1000 x 7,387,917 ops/sec ±0.19% (99 runs sampled)
 ```
 
 ## Extension

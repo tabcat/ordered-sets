@@ -12,9 +12,13 @@ export function* intersection<T>(
   target: Iterable<T>,
   comparator: (a: T, b: T) => number,
 ): Generator<T> {
-  for (const [s, t] of pairwiseTraversal(source, target, comparator)) {
-    if (s != null && t != null) {
+  for (const [s, t, sourceDone, targetDone] of pairwiseTraversal(source, target, comparator)) {
+    if (s !== null && t !== null) {
       yield t;
+    }
+
+    if (sourceDone || targetDone) {
+      break
     }
   }
 }
