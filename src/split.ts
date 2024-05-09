@@ -1,4 +1,4 @@
-import { pairwiseTraversal } from "./util";
+import { pairwiseTraversal, type Range } from "./util";
 
 /**
  * Splits a set into multiple sets at sector points.
@@ -29,4 +29,37 @@ export function* split<T>(
   }
 
   if (section.length > 0 || empty) yield section;
+}
+
+export function* ranges<T>(
+  source: Iterable<T>,
+  sectors: Iterable<T>,
+  comparator: (a: T, b: T) => number,
+  offset: number = 0,
+): Generator<Range> {
+  if (offset < 0) {
+    throw new Error("offset cannot be negative");
+  }
+
+  let empty: boolean = true;
+  let range: Range = [offset, offset];
+
+  for (const [element, sector] of pairwiseTraversal(
+    source,
+    sectors,
+    comparator,
+  )) {
+    if (empty === true) empty = false;
+
+    if (element != null) {
+      range[1] += 1;
+    }
+
+    if (sector != null) {
+      yield range;
+      range = [range[1], range[1]];
+    }
+  }
+
+  if (range[0] < range[1] || empty) yield range;
 }
