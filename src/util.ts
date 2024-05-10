@@ -97,21 +97,22 @@ export function* pairwiseTraversal<T, A extends T, B extends T>(
   while (!sourceDone && !targetDone) {
     const order = comparator(s.value, t.value);
 
-    switch (true) {
-      case order < 0:
-        yield [s.value, null, sourceDone, targetDone];
-        s = iteratorS.next();
-        break;
-      case order > 0:
-        yield [null, t.value, sourceDone, targetDone];
-        t = iteratorT.next();
-        break;
-      case order === 0:
-        yield [s.value, t.value, sourceDone, targetDone];
-        s = iteratorS.next();
-        t = iteratorT.next();
-        break;
+    const result = [null, null, sourceDone, targetDone] as [
+      ...PairwiseElement<A, B>,
+      ...PairwiseDone,
+    ];
+
+    if (order <= 0) {
+      result[0] = s.value;
+      s = iteratorS.next();
     }
+
+    if (order >= 0) {
+      result[1] = t.value;
+      t = iteratorT.next();
+    }
+
+    yield result;
 
     if (s.done === true) {
       sourceDone = iteratorIsDone(s);
