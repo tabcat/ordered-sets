@@ -59,7 +59,7 @@ export function* readArray<T>(
   }
 }
 
-export type PairwiseElement<T> = [T, null] | [null, T] | [T, T];
+export type PairwiseElement<A, B> = [A, null] | [null, B] | [A, B];
 
 export type PairwiseDone = [source: boolean, target: boolean];
 
@@ -79,11 +79,11 @@ export const iteratorIsDone = (result: IteratorResult<unknown>): boolean =>
  * @param target - Target ordered set
  * @param comparator - Used to compare two set elements, same as Array.sort parameter
  */
-export function* pairwiseTraversal<T>(
-  source: Iterable<T>,
-  target: Iterable<T>,
+export function* pairwiseTraversal<T, A extends T, B extends T>(
+  source: Iterable<A>,
+  target: Iterable<B>,
   comparator: (a: T, b: T) => number,
-): Generator<[...PairwiseElement<T>, ...PairwiseDone]> {
+): Generator<[...PairwiseElement<A, B>, ...PairwiseDone]> {
   const iteratorS = source[Symbol.iterator]();
   const iteratorT = target[Symbol.iterator]();
 

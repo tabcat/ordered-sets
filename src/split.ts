@@ -7,13 +7,13 @@ import { pairwiseTraversal, type Range } from "./util";
  * @param sectors - Set of sector points
  * @param comparator - Used to compare two set elements, same as Array.sort parameter
  */
-export function* split<T>(
-  source: Iterable<T>,
+export function* split<T, B extends T>(
+  source: Iterable<B>,
   sectors: Iterable<T>,
   comparator: (a: T, b: T) => number,
-): Generator<T[]> {
+): Generator<B[]> {
   let empty = true;
-  let section: T[] = [];
+  let section: B[] = [];
 
   for (const [a, b] of pairwiseTraversal(source, sectors, comparator)) {
     if (empty === true) empty = false;
@@ -31,8 +31,8 @@ export function* split<T>(
   if (section.length > 0 || empty) yield section;
 }
 
-export function* ranges<T>(
-  source: Iterable<T>,
+export function* ranges<T, B extends T>(
+  source: Iterable<B>,
   sectors: Iterable<T>,
   comparator: (a: T, b: T) => number,
   offset: number = 0,

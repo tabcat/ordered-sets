@@ -7,11 +7,11 @@ import { pairwiseTraversal } from "./util.js";
  * @param target - Set of elements to also add to union
  * @param comparator - Used to compare two set elements, same as Array.sort parameter
  */
-export function* union<T>(
-  source: Iterable<T>,
-  target: Iterable<T>,
+export function* union<T, B extends T>(
+  source: Iterable<B>,
+  target: Iterable<B>,
   comparator: (a: T, b: T) => number,
-): Generator<T> {
+): Generator<B> {
   for (const [s, t] of pairwiseTraversal(source, target, comparator)) {
     yield (s ?? t)!;
   }

@@ -95,8 +95,8 @@ describe("pairwiseTraversal", () => {
   });
 
   describe("finds ordered traversal of two sets", () => {
-    let g: Generator<[...PairwiseElement<number>, ...PairwiseDone]>;
-    let u: [...PairwiseElement<number>, ...PairwiseDone][];
+    let g: Generator<[...PairwiseElement<number, number>, ...PairwiseDone]>;
+    let u: [...PairwiseElement<number, number>, ...PairwiseDone][];
 
     test(testNames.firstAndSecondEmpty, () => {
       g = pairwiseTraversal(empty(), empty(), comparator);

@@ -7,18 +7,22 @@ import { pairwiseTraversal } from "./util.js";
  * @param target - Set of elements to be removed
  * @param comparator - Used to compare two set elements, same as Array.sort parameter
  */
-export function* intersection<T>(
-  source: Iterable<T>,
+export function* intersection<T, A extends T>(
+  source: Iterable<A>,
   target: Iterable<T>,
   comparator: (a: T, b: T) => number,
-): Generator<T> {
-  for (const [s, t, sourceDone, targetDone] of pairwiseTraversal(source, target, comparator)) {
+): Generator<A> {
+  for (const [s, t, sourceDone, targetDone] of pairwiseTraversal(
+    source,
+    target,
+    comparator,
+  )) {
     if (s !== null && t !== null) {
-      yield t;
+      yield s;
     }
 
     if (sourceDone || targetDone) {
-      break
+      break;
     }
   }
 }
