@@ -79,10 +79,10 @@ export const iteratorIsDone = (result: IteratorResult<unknown>): boolean =>
  * @param target - Target ordered set
  * @param comparator - Used to compare two set elements, same as Array.sort parameter
  */
-export function* pairwiseTraversal<T, A extends T, B extends T>(
+export function* pairwiseTraversal<A, B>(
   source: Iterable<A>,
   target: Iterable<B>,
-  comparator: (a: T, b: T) => number,
+  comparator: (a: A, b: B) => number,
 ): Generator<[...PairwiseElement<A, B>, ...PairwiseDone]> {
   const iteratorS = source[Symbol.iterator]();
   const iteratorT = target[Symbol.iterator]();
