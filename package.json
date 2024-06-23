@@ -40,8 +40,8 @@
   "scripts": {
     "build": "rm -rf ./dist && tsc",
     "test": "vitest",
-    "lint": "eslint",
-    "format": "prettier --write src test && eslint --fix",
+    "lint": "prettier --check src test",
+    "format": "prettier --write src test",
     "api-docs": "typedoc src",
     "benchmark": "pnpm build && node ./dist/benchmark/benchmark.js"
   },
@@ -53,22 +53,13 @@
   "author": "tabcat",
   "license": "MIT",
   "devDependencies": {
-    "@eslint/eslintrc": "^3.0.2",
-    "@eslint/js": "^9.0.0",
     "@types/benchmark": "^2.1.5",
-    "@typescript-eslint/eslint-plugin": "^7.6.0",
     "benchmark": "^2.1.4",
-    "eslint": "^8.57.0",
-    "eslint-config-love": "^47.0.0",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-n": "^16.6.2",
-    "eslint-plugin-promise": "^6.1.1",
     "globals": "^15.0.0",
     "iter-tools-es": "^7.5.3",
     "prettier": "^3.2.5",
     "typedoc": "^0.25.13",
     "typescript": "^5.4.5",
-    "typescript-eslint": "^7.6.0",
     "vitest": "^1.5.0"
   }
 }
