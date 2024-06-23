@@ -73,68 +73,68 @@ export const iteratorIsDone = (result: IteratorResult<unknown>): boolean =>
   result.value === undefined && result.done === true;
 
 /**
- * Yields pairwise traversal of two ordered sets.
+ * Yields pairwise traversal of two ordered arrays.
  *
- * @param source - Source ordered set
- * @param target - Target ordered set
+ * @param iterableA - First ordered array
+ * @param iterableB - Second ordered array
  * @param comparator - Used to compare two set elements, same as Array.sort parameter
  */
 export function* pairwiseTraversal<A, B>(
-  source: Iterable<A>,
-  target: Iterable<B>,
+  iterableA: Iterable<A>,
+  iterableB: Iterable<B>,
   comparator: (a: A, b: B) => number,
 ): Generator<[...PairwiseElement<A, B>, ...PairwiseDone]> {
-  const iteratorS = source[Symbol.iterator]();
-  const iteratorT = target[Symbol.iterator]();
+  const iteratorA = iterableA[Symbol.iterator]();
+  const iteratorB = iterableB[Symbol.iterator]();
 
-  // initialize s and t
-  let s = iteratorS.next();
-  let t = iteratorT.next();
+  // initialize a and b values
+  let a = iteratorA.next();
+  let b = iteratorB.next();
 
-  let sourceDone = iteratorIsDone(s);
-  let targetDone = iteratorIsDone(t);
+  let aIsDone = iteratorIsDone(a);
+  let bIsDone = iteratorIsDone(b);
 
-  while (!sourceDone && !targetDone) {
-    const order = comparator(s.value, t.value);
+  while (!aIsDone && !bIsDone) {
+    const order = comparator(a.value, b.value);
 
-    const result = [null, null, sourceDone, targetDone] as [
+    const result = [null, null, aIsDone, bIsDone] as [
       ...PairwiseElement<A, B>,
       ...PairwiseDone,
     ];
 
     if (order <= 0) {
-      result[0] = s.value;
-      s = iteratorS.next();
+      result[0] = a.value;
+      a = iteratorA.next();
     }
 
     if (order >= 0) {
-      result[1] = t.value;
-      t = iteratorT.next();
+      result[1] = b.value;
+      b = iteratorB.next();
     }
 
     yield result;
 
-    if (s.done === true) {
-      sourceDone = iteratorIsDone(s);
+    if (a.done === true) {
+      aIsDone = iteratorIsDone(a);
     }
-    if (t.done === true) {
-      targetDone = iteratorIsDone(t);
-    }
-  }
-
-  while (!sourceDone) {
-    yield [s.value, null, sourceDone, targetDone];
-    s = iteratorS.next();
-    if (s.done === true) {
-      sourceDone = iteratorIsDone(s);
+    if (b.done === true) {
+      bIsDone = iteratorIsDone(b);
     }
   }
 
-  while (!targetDone) {
-    yield [null, t.value, sourceDone, targetDone];
-    t = iteratorT.next();
-    if (t.done === true) {
-      targetDone = iteratorIsDone(t);
+  while (!aIsDone) {
+    yield [a.value, null, aIsDone, bIsDone];
+    a = iteratorA.next();
+    if (a.done === true) {
+      aIsDone = iteratorIsDone(a);
+    }
+  }
+
+  while (!bIsDone) {
+    yield [null, b.value, aIsDone, bIsDone];
+    b = iteratorB.next();
+    if (b.done === true) {
+      bIsDone = iteratorIsDone(b);
     }
   }
 }
